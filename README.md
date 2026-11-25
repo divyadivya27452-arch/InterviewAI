@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Interview AI
 
 An AI-powered mock interview and performance analysis platform built with **Python + Flask**, **MongoDB (PyMongo)**, **Chart.js**, and **vanilla HTML, CSS, and JavaScript**.
@@ -131,3 +132,6 @@ python app.py
 ```
 
 Open **http://127.0.0.1:5000** in your browser.
+=======
+# InterviewAI
+>>>>>>> 8fc4fe9ef59155b6bfbb2fa594ddd70dda38b09d
