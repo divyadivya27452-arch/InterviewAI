@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Interview AI</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/logo.svg') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body class="auth-body">
+  <div class="auth-wrapper">
+    <div class="auth-hero">
+      <div class="auth-brand">
+        <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Interview AI" class="brand-logo-lg" />
+        <div>
+          <h1>Interview AI</h1>
+          <p>Sharpen your answers before the real interview</p>
+        </div>
+      </div>
+      <ul class="auth-highlights">
+        <li>7 specialized career tracks from Web Dev to AI/ML</li>
+        <li>Beginner, Intermediate &amp; Advanced difficulty tiers</li>
+        <li>Actionable strengths, weaknesses &amp; ideal answer hints</li>
+        <li>Track measurable improvement across every attempt</li>
+      </ul>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <h2>Create your account</h2>
+        <p>Start practicing interviews in under a minute</p>
+      </div>
+
+      <form id="register-form" class="auth-form" novalidate>
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" name="name" placeholder="Alex Morgan" required minlength="2" autocomplete="name" />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" name="email" placeholder="alex@example.com" required autocomplete="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <div class="password-field">
+            <input type="password" id="reg-password" name="password" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password" />
+            <button type="button" class="toggle-password" data-target="reg-password" aria-label="Show password">Show</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-confirm-password">Confirm Password</label>
+          <div class="password-field">
+            <input type="password" id="reg-confirm-password" name="confirm_password" placeholder="Re-enter password" required minlength="6" autocomplete="new-password" />
+            <button type="button" class="toggle-password" data-target="reg-confirm-password" aria-label="Show password">Show</button>
+          </div>
+        </div>
+
+        <button type="submit" id="register-submit-btn" class="btn btn-primary btn-block">
+          Create Account
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Already registered? <a href="{{ url_for('auth.login_page') }}">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

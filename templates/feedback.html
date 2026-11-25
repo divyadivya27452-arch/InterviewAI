@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="feedback-root" data-interview-id="{{ interview_id or '' }}">
+  <!-- Empty State -->
+  <section id="feedback-empty-state" class="card empty-state hidden">
+    <div class="empty-icon">💬</div>
+    <h3>No Interview Feedback Available Yet</h3>
+    <p>Complete a mock interview to unlock detailed AI scoring, skill breakdowns, and model answer hints.</p>
+    <a href="{{ url_for('interview.interview_page') }}" class="btn btn-primary">Start Mock Interview</a>
+  </section>
+
+  <!-- Feedback Main Content -->
+  <div id="feedback-content" class="hidden">
+    <!-- Overview Hero Card -->
+    <section class="card feedback-hero-card">
+      <div class="feedback-score-col">
+        <div class="score-ring" id="feedback-score-ring">
+          <svg viewBox="0 0 120 120" class="score-svg">
+            <circle cx="60" cy="60" r="52" class="score-track"></circle>
+            <circle cx="60" cy="60" r="52" class="score-progress" id="score-circle-progress"></circle>
+          </svg>
+          <div class="score-center">
+            <strong id="feedback-overall-score">0</strong>
+            <span>/ 100</span>
+          </div>
+        </div>
+        <span id="feedback-score-verdict" class="verdict-pill">Evaluating...</span>
+      </div>
+
+      <div class="feedback-meta-col">
+        <div class="feedback-meta-top">
+          <div>
+            <h2 id="feedback-role-title" class="card-title">Interview Summary</h2>
+            <p id="feedback-date-subtitle" class="card-subtitle"></p>
+          </div>
+          <span id="feedback-eval-mode" class="badge badge-indigo">AI Evaluator</span>
+        </div>
+
+        <div class="feedback-badges-row">
+          <span id="fb-badge-type" class="badge badge-blue">Type</span>
+          <span id="fb-badge-level" class="badge badge-slate">Level</span>
+          <span id="fb-badge-questions" class="badge badge-slate">Questions</span>
+          <span id="fb-badge-duration" class="badge badge-amber">Duration</span>
+        </div>
+
+        <div id="skills-improved-box" class="improved-box hidden">
+          <strong>Skills Improved Since Last Attempt:</strong>
+          <div id="skills-improved-chips" class="chips-row"></div>
+        </div>
+
+        <div class="feedback-hero-actions">
+          <a href="{{ url_for('interview.interview_page') }}" class="btn btn-primary btn-sm">Practice Again</a>
+          <a href="{{ url_for('interview.history_page') }}" class="btn btn-outline btn-sm">View All History</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skill-Wise Breakdown -->
+    <section class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Skill-Wise Radar</h2>
+            <p class="card-subtitle">Current attempt vs previous completed interview</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="feedbackSkillRadar"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">Skill Breakdown &amp; Progress</h2>
+            <p class="card-subtitle">Four core interview dimensions</p>
+          </div>
+        </div>
+        <div id="skill-bars-list" class="skill-bars-list"></div>
+      </div>
+    </section>
+
+    <!-- Per-Question Expandable Feedback Cards -->
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Question-by-Question AI Feedback</h2>
+          <p class="card-subtitle">Click any question card to inspect strengths, weaknesses, improvements, and the ideal answer hint.</p>
+        </div>
+        <button type="button" id="toggle-all-cards-btn" class="btn btn-outline btn-sm">Expand All</button>
+      </div>
+
+      <div id="question-feedback-list" class="accordion-list"></div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+{% endblock %}

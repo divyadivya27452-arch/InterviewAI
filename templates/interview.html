@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Setup Screen -->
+<section id="interview-setup-section" class="card setup-card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">Configure Your AI Mock Interview</h2>
+      <p class="card-subtitle">Select your target role, difficulty level, question format, and session length.</p>
+    </div>
+  </div>
+
+  <form id="interview-setup-form" class="setup-form">
+    <div class="setup-grid">
+      <div class="form-group">
+        <label for="setup-role">Job Role</label>
+        <select id="setup-role" name="role" required>
+          {% for role in roles %}
+          <option value="{{ role }}" {% if current_user and current_user.target_role == role %}selected{% endif %}>{{ role }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="setup-level">Difficulty Level</label>
+        <select id="setup-level" name="level" required>
+          {% for lvl in levels %}
+          <option value="{{ lvl }}" {% if lvl == 'Intermediate' %}selected{% endif %}>{{ lvl }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="setup-type">Question Type</label>
+        <select id="setup-type" name="type" required>
+          {% for t in types %}
+          <option value="{{ t }}" {% if t == 'Mixed' %}selected{% endif %}>{{ t }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="setup-count">Number of Questions</label>
+        <select id="setup-count" name="total_questions" required>
+          {% for c in counts %}
+          <option value="{{ c }}" {% if c == 5 %}selected{% endif %}>{{ c }} Questions</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="setup-tips">
+      <div class="tip-item">
+        <strong>Voice + Text Support</strong>
+        <span>Type your answers or dictate hands-free using Web Speech API (Chrome/Edge).</span>
+      </div>
+      <div class="tip-item">
+        <strong>Auto-Saved Progress</strong>
+        <span>Every answer is persisted automatically to MongoDB as you move between questions.</span>
+      </div>
+      <div class="tip-item">
+        <strong>Instant AI Evaluation</strong>
+        <span>Receive per-question scoring, strengths, improvements, and ideal answer hints.</span>
+      </div>
+    </div>
+
+    <div class="setup-actions">
+      <button type="submit" id="start-interview-btn" class="btn btn-primary btn-lg">
+        Start Interview
+      </button>
+    </div>
+  </form>
+</section>
+
+<!-- Active Interview Screen -->
+<section id="interview-active-section" class="hidden">
+  <div class="card interview-hud">
+    <div class="hud-top">
+      <div class="hud-meta">
+        <span id="hud-role-badge" class="badge badge-blue">Role</span>
+        <span id="hud-type-badge" class="badge badge-indigo">Type</span>
+        <span id="hud-level-badge" class="badge badge-slate">Level</span>
+      </div>
+      <div class="hud-timer" aria-label="Elapsed interview timer">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9"/>
+          <polyline points="12 7 12 12 15 14"/>
+        </svg>
+        <span id="interview-timer">00:00</span>
+      </div>
+    </div>
+
+    <div class="progress-row">
+      <span id="question-progress-text" class="progress-label">Question 1 of 5</span>
+      <span id="question-answered-count" class="progress-answered">0 answered</span>
+    </div>
+    <div class="progress-track">
+      <div id="question-progress-bar" class="progress-fill" style="width: 20%;"></div>
+    </div>
+  </div>
+
+  <div class="card question-card">
+    <div class="question-header">
+      <span id="question-category-badge" class="badge badge-emerald">Technical</span>
+      <span id="save-status-pill" class="save-pill">Ready</span>
+    </div>
+
+    <h2 id="question-text" class="question-prompt">Loading question...</h2>
+
+    <div class="answer-area">
+      <div class="answer-toolbar">
+        <label for="answer-textarea">Your Answer</label>
+        <div class="voice-controls">
+          <button type="button" id="voice-toggle-btn" class="btn btn-outline btn-sm">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            </svg>
+            <span id="voice-btn-label">Voice Input</span>
+          </button>
+          <span id="word-count-label" class="word-count">0 words</span>
+        </div>
+      </div>
+
+      <textarea
+        id="answer-textarea"
+        rows="7"
+        placeholder="Explain your reasoning clearly. Include concrete examples, key concepts, or STAR steps where relevant..."
+      ></textarea>
+      <p id="voice-status-note" class="voice-note hidden"></p>
+    </div>
+
+    <div class="question-actions">
+      <div class="actions-left">
+        <button type="button" id="prev-question-btn" class="btn btn-outline">Previous</button>
+        <button type="button" id="skip-question-btn" class="btn btn-ghost">Skip Question</button>
+      </div>
+      <div class="actions-right">
+        <button type="button" id="next-question-btn" class="btn btn-primary">Next Question</button>
+        <button type="button" id="submit-interview-btn" class="btn btn-success">Submit Interview</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Navigator Dots -->
+  <div class="card question-nav-card">
+    <span class="nav-strip-title">Question Navigator</span>
+    <div id="question-dots" class="question-dots"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/interview.js') }}"></script>
+{% endblock %}

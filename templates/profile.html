@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-grid">
+  <!-- Profile Details Card -->
+  <section class="card">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">Personal Information</h2>
+        <p class="card-subtitle">Update your contact details, academic background, target role, and photo.</p>
+      </div>
+    </div>
+
+    <form id="profile-form" class="stacked-form" enctype="multipart/form-data">
+      <div class="avatar-upload-row">
+        <img
+          id="profile-photo-preview"
+          src="{{ current_user.photo if current_user else '/static/img/default-avatar.svg' }}"
+          alt="Profile avatar preview"
+          class="profile-avatar-lg"
+        />
+        <div class="avatar-upload-controls">
+          <label for="profile-photo-input" class="btn btn-outline btn-sm">Choose New Photo</label>
+          <input type="file" id="profile-photo-input" name="photo" accept="image/png,image/jpeg,image/gif,image/webp" class="sr-only" />
+          <span class="field-hint">PNG, JPG, GIF, or WEBP up to 5 MB.</span>
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label for="profile-name">Full Name</label>
+          <input type="text" id="profile-name" name="name" required minlength="2" value="{{ current_user.name if current_user else '' }}" />
+        </div>
+
+        <div class="form-group">
+          <label for="profile-email">Email Address</label>
+          <input type="email" id="profile-email" name="email" required value="{{ current_user.email if current_user else '' }}" />
+        </div>
+      </div>
+
+      <div class="form-row-2">
+        <div class="form-group">
+          <label for="profile-phone">Phone Number</label>
+          <input type="tel" id="profile-phone" name="phone" placeholder="+1 555-123-4567" value="{{ current_user.phone if current_user else '' }}" />
+        </div>
+
+        <div class="form-group">
+          <label for="profile-college">College / University</label>
+          <input type="text" id="profile-college" name="college" placeholder="e.g., MIT / State University" value="{{ current_user.college if current_user else '' }}" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="profile-target-role">Target Role</label>
+        <select id="profile-target-role" name="target_role">
+          {% for role in roles %}
+          <option value="{{ role }}" {% if current_user and current_user.target_role == role %}selected{% endif %}>{{ role }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-actions-end">
+        <button type="submit" id="save-profile-btn" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Security & Danger Zone -->
+  <div class="profile-side-col">
+    <section class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Change Password</h2>
+          <p class="card-subtitle">Verify your current password before setting a new one.</p>
+        </div>
+      </div>
+
+      <form id="password-form" class="stacked-form" novalidate>
+        <div class="form-group">
+          <label for="old-password">Current Password</label>
+          <input type="password" id="old-password" required autocomplete="current-password" />
+        </div>
+
+        <div class="form-group">
+          <label for="new-password">New Password</label>
+          <input type="password" id="new-password" required minlength="6" placeholder="At least 6 characters" autocomplete="new-password" />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-new-password">Confirm New Password</label>
+          <input type="password" id="confirm-new-password" required minlength="6" autocomplete="new-password" />
+        </div>
+
+        <div class="form-actions-end">
+          <button type="submit" id="change-password-btn" class="btn btn-primary">Update Password</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card danger-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title text-danger">Danger Zone</h2>
+          <p class="card-subtitle">Permanently delete your account, interview history, and feedback records.</p>
+        </div>
+      </div>
+
+      <button type="button" id="open-delete-account-btn" class="btn btn-danger">Delete My Account</button>
+    </section>
+  </div>
+</div>
+
+<!-- Delete Account Confirmation Modal -->
+<div id="delete-account-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="delete-account-title">
+  <div class="modal-card">
+    <h3 id="delete-account-title">Delete Your Account Permanently?</h3>
+    <p>All your mock interviews, analytics, and profile information will be erased and cannot be recovered. Enter your password to confirm.</p>
+    <div class="form-group">
+      <label for="delete-account-password">Current Password</label>
+      <input type="password" id="delete-account-password" placeholder="Enter your password" />
+    </div>
+    <div class="modal-actions">
+      <button type="button" id="cancel-delete-account-btn" class="btn btn-outline">Cancel</button>
+      <button type="button" id="confirm-delete-account-btn" class="btn btn-danger">Permanently Delete</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

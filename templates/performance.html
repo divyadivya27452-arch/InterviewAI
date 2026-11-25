@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div id="performance-empty-state" class="card empty-state hidden">
+  <div class="empty-icon">📊</div>
+  <h3>No Completed Interviews to Analyze Yet</h3>
+  <p>Complete at least one mock interview to view role comparisons, skill radars, and difficulty analytics.</p>
+  <a href="{{ url_for('interview.interview_page') }}" class="btn btn-primary">Start Mock Interview</a>
+</div>
+
+<div id="performance-content" class="hidden">
+  <!-- Summary Cards -->
+  <section class="stats-grid stats-grid-3">
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-emerald">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/>
+        </svg>
+      </div>
+      <div class="stat-body">
+        <span class="stat-label">Best Score</span>
+        <strong id="perf-best-score" class="stat-value">0%</strong>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-amber">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <circle cx="12" cy="16" r="0.5" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="stat-body">
+        <span class="stat-label">Lowest Score</span>
+        <strong id="perf-lowest-score" class="stat-value">0%</strong>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-blue">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+        </svg>
+      </div>
+      <div class="stat-body">
+        <span class="stat-label">Most Practiced Role</span>
+        <strong id="perf-top-role" class="stat-value stat-value-sm">—</strong>
+        <small id="perf-total-completed" class="stat-subtext"></small>
+      </div>
+    </article>
+  </section>
+
+  <!-- Charts Grid -->
+  <section class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Score Trend Over Time</h2>
+          <p class="card-subtitle">All completed mock interviews</p>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="perfTrendChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Skill-Wise Radar</h2>
+          <p class="card-subtitle">Average score across core competencies</p>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="perfRadarChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid-3">
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Scores by Role</h2>
+          <p class="card-subtitle">Average performance per track</p>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="perfRoleChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Scores by Question Type</h2>
+          <p class="card-subtitle">Technical vs HR vs Mixed</p>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="perfTypeChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Difficulty Comparison</h2>
+          <p class="card-subtitle">Beginner vs Intermediate vs Advanced</p>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="perfLevelChart"></canvas>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/performance.js') }}"></script>
+{% endblock %}

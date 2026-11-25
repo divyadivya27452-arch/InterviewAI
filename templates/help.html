@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- How-To Guide -->
+<section class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">How to Use Interview AI</h2>
+      <p class="card-subtitle">Follow these four simple steps to practice and track measurable progress.</p>
+    </div>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <span class="step-num">1</span>
+      <h3>Configure Session</h3>
+      <p>Pick your target role, difficulty (Beginner to Advanced), question type (Technical, HR, or Mixed), and length (5, 10, or 20 questions).</p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">2</span>
+      <h3>Answer via Text or Voice</h3>
+      <p>Type your response or click <strong>Voice Input</strong> to dictate with your microphone using your browser's Web Speech API.</p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">3</span>
+      <h3>Review AI Feedback</h3>
+      <p>After submitting, inspect your 0–100 score, 4-skill breakdown, strengths, weaknesses, and model answer hints per question.</p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">4</span>
+      <h3>Track Growth</h3>
+      <p>Visit Dashboard and Performance Analytics to watch your score trends, role averages, and improved skills climb over time.</p>
+    </div>
+  </div>
+</section>
+
+<section class="grid-2">
+  <!-- FAQ Accordion -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">Frequently Asked Questions</h2>
+        <p class="card-subtitle">Quick answers about scoring, voice input, and data privacy.</p>
+      </div>
+    </div>
+
+    <div id="faq-accordion" class="accordion-list">
+      <div class="accordion-item open">
+        <button type="button" class="accordion-trigger">
+          <span>How does Interview AI score my answers?</span>
+          <span class="accordion-chevron">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <p>When a Gemini API key is configured, answers are evaluated by Gemini with structured rubrics. Otherwise, our built-in rule-based engine scores keyword coverage, explanation depth, clarity/structure, reasoning markers, and confidence signals—and provides model answer hints for every question.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button type="button" class="accordion-trigger">
+          <span>Which browsers support Voice Input?</span>
+          <span class="accordion-chevron">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <p>Voice dictation uses the browser's built-in Web Speech API, which works best in desktop Chrome and Microsoft Edge over localhost or HTTPS. If your browser does not support it, you can always type your answers seamlessly.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button type="button" class="accordion-trigger">
+          <span>Can I resume an unfinished interview later?</span>
+          <span class="accordion-chevron">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <p>Yes! Every answer is auto-saved to MongoDB as you move between questions. Any unfinished session appears with an <strong>In Progress</strong> badge in Dashboard and Interview History with a <strong>Resume</strong> action.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button type="button" class="accordion-trigger">
+          <span>How is "Skills Improved" calculated?</span>
+          <span class="accordion-chevron">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <p>On the Feedback page, each of the four competencies (Communication, Technical Knowledge, Confidence, Problem Solving) is compared directly against your previous completed interview. On the Dashboard, it counts how many skills improved from your earliest baseline to your latest session.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button type="button" class="accordion-trigger">
+          <span>Can I delete an interview record or my account?</span>
+          <span class="accordion-chevron">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <p>Yes. You can delete individual interviews from the Interview History page, or permanently delete your entire account and associated data from My Profile Settings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact / Support Form -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <h2 class="card-title">Contact Support</h2>
+        <p class="card-subtitle">Have a question, bug report, or feature request? Send us a message.</p>
+      </div>
+    </div>
+
+    <form id="support-form" class="stacked-form" novalidate>
+      <div class="form-group">
+        <label for="support-subject">Subject</label>
+        <input type="text" id="support-subject" placeholder="e.g., Question about AI Feedback scoring" required minlength="3" />
+      </div>
+
+      <div class="form-group">
+        <label for="support-message">Message</label>
+        <textarea id="support-message" rows="6" placeholder="Describe how we can help..." required minlength="10"></textarea>
+      </div>
+
+      <div class="form-actions-end">
+        <button type="submit" id="support-submit-btn" class="btn btn-primary">Send Message</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/help.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">Filter Interview Records</h2>
+      <p class="card-subtitle">Search and filter by role, question type, difficulty level, or date range.</p>
+    </div>
+    <button type="button" id="reset-filters-btn" class="btn btn-outline btn-sm">Reset Filters</button>
+  </div>
+
+  <form id="history-filter-form" class="filters-grid">
+    <div class="form-group">
+      <label for="filter-search">Search</label>
+      <input type="text" id="filter-search" placeholder="Role, type, status..." />
+    </div>
+
+    <div class="form-group">
+      <label for="filter-role">Role</label>
+      <select id="filter-role">
+        <option value="">All Roles</option>
+        {% for role in roles %}
+        <option value="{{ role }}">{{ role }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="filter-type">Type</label>
+      <select id="filter-type">
+        <option value="">All Types</option>
+        {% for t in types %}
+        <option value="{{ t }}">{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="filter-level">Level</label>
+      <select id="filter-level">
+        <option value="">All Levels</option>
+        {% for lvl in levels %}
+        <option value="{{ lvl }}">{{ lvl }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="filter-date-from">From Date</label>
+      <input type="date" id="filter-date-from" />
+    </div>
+
+    <div class="form-group">
+      <label for="filter-date-to">To Date</label>
+      <input type="date" id="filter-date-to" />
+    </div>
+  </form>
+</section>
+
+<section class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">All Interviews</h2>
+      <p id="history-count-label" class="card-subtitle">Loading records...</p>
+    </div>
+    <a href="{{ url_for('interview.interview_page') }}" class="btn btn-primary btn-sm">+ New Interview</a>
+  </div>
+
+  <div id="history-table-wrapper" class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Role</th>
+          <th>Type</th>
+          <th>Level</th>
+          <th>Questions</th>
+          <th>Score</th>
+          <th>Status</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="history-table-body"></tbody>
+    </table>
+  </div>
+
+  <div id="history-empty-state" class="empty-state hidden">
+    <div class="empty-icon">🗂️</div>
+    <h3>No Matching Interviews Found</h3>
+    <p>Try adjusting your search filters or start a new AI mock interview.</p>
+    <a href="{{ url_for('interview.interview_page') }}" class="btn btn-primary">Start Mock Interview</a>
+  </div>
+
+  <div id="history-pagination" class="pagination-bar hidden">
+    <button type="button" id="prev-page-btn" class="btn btn-outline btn-sm">Previous</button>
+    <span id="pagination-info" class="pagination-info">Page 1 of 1</span>
+    <button type="button" id="next-page-btn" class="btn btn-outline btn-sm">Next</button>
+  </div>
+</section>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-interview-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+  <div class="modal-card">
+    <h3 id="delete-modal-title">Delete Interview Record?</h3>
+    <p>This action permanently removes this interview and its AI feedback from your history.</p>
+    <div class="modal-actions">
+      <button type="button" id="cancel-delete-interview-btn" class="btn btn-outline">Cancel</button>
+      <button type="button" id="confirm-delete-interview-btn" class="btn btn-danger">Delete Record</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}

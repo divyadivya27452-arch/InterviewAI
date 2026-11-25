@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Top Stat Cards -->
+<section class="stats-grid">
+  <article class="stat-card">
+    <div class="stat-icon stat-icon-blue">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+        <rect x="9" y="3" width="6" height="4" rx="1"/>
+        <path d="M9 14l2 2 4-4"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-label">Total Interviews Attended</span>
+      <strong id="stat-total-interviews" class="stat-value">0</strong>
+    </div>
+  </article>
+
+  <article class="stat-card">
+    <div class="stat-icon stat-icon-emerald">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M8 12l2.5 2.5L16 9"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-label">Average Score</span>
+      <strong id="stat-average-score" class="stat-value">0%</strong>
+    </div>
+  </article>
+
+  <article class="stat-card">
+    <div class="stat-icon stat-icon-indigo">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+        <polyline points="17 6 23 6 23 12"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-label">Skills Improved</span>
+      <strong id="stat-skills-improved" class="stat-value">0</strong>
+      <small id="stat-skills-hint" class="stat-subtext"></small>
+    </div>
+  </article>
+
+  <article class="stat-card">
+    <div class="stat-icon stat-icon-amber">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9"/>
+        <polyline points="12 7 12 12 15.5 14"/>
+      </svg>
+    </div>
+    <div class="stat-body">
+      <span class="stat-label">Practice Time</span>
+      <strong id="stat-practice-time" class="stat-value">0m</strong>
+    </div>
+  </article>
+</section>
+
+<!-- Performance Overview Chart -->
+<section class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">Performance Overview</h2>
+      <p class="card-subtitle">Score trend across your last 10 completed interviews</p>
+    </div>
+    <a href="{{ url_for('dashboard.performance_page') }}" class="btn btn-outline btn-sm">Detailed Analytics</a>
+  </div>
+  <div id="perf-chart-container" class="chart-container chart-container-lg">
+    <canvas id="dashboardPerfChart"></canvas>
+  </div>
+  <div id="perf-empty-state" class="empty-state hidden">
+    <div class="empty-icon">📈</div>
+    <h3>No Performance Data Yet</h3>
+    <p>Complete your first AI mock interview to visualize your score trend over time.</p>
+    <a href="{{ url_for('interview.interview_page') }}" class="btn btn-primary">Start Mock Interview</a>
+  </div>
+</section>
+
+<!-- Recent Interviews Table -->
+<section class="card">
+  <div class="card-header">
+    <div>
+      <h2 class="card-title">Recent Interviews</h2>
+      <p class="card-subtitle">Your latest mock interview sessions</p>
+    </div>
+    <a href="{{ url_for('interview.history_page') }}" class="btn btn-outline btn-sm">View All</a>
+  </div>
+
+  <div id="recent-table-wrapper" class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Role</th>
+          <th>Type</th>
+          <th>Score</th>
+          <th>Status</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody id="recent-interviews-body"></tbody>
+    </table>
+  </div>
+
+  <div id="recent-empty-state" class="empty-state hidden">
+    <div class="empty-icon">🎤</div>
+    <h3>No Interviews Recorded Yet</h3>
+    <p>Choose your target role and difficulty to take your first AI-evaluated mock interview.</p>
+    <a href="{{ url_for('interview.interview_page') }}" class="btn btn-primary">Start Your First Interview</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
